@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 function App() {
-  
+
   const [article, setArticle] = useState([]); // Stato per la lista degli articoli
 
   const [articleTitle, setArticleTitle] = useState(""); // Stato per il titolo dell'articolo
@@ -27,10 +27,36 @@ function App() {
     setArticleAuthor("");
   }
 
+  // Funzione per cancellare un articolo tramite il suo ID
+  const cancel = (idToDelete) => {
+    const newArray = article.filter(curArticle => curArticle.id !== idToDelete);
+    setArticle(newArray);
+  }
+
   return (
     <>
       <div className="container">
-        <h1 className="text-center mb-5">New Articles</h1>
+        <section>
+          <h2>Nuovi Articoli</h2>
+          {article.length > 0 ? (
+            <div className="row">
+              {article.map((curArticle) => (
+                <div className="col" key={curArticle.id}>
+                  <div className="card">
+                    <div className="card-body">
+                      <h4>{curArticle.title}</h4>
+                      <p>{curArticle.author}</p>
+                      <button onClick={() => cancel(curArticle.id)} className="btn">🗑️</button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p>Nessun articolo</p>
+          )}
+        </section>
+
         <section>
           <h3>Aggiungi un nuovo articolo</h3>
           <form onSubmit={handleArticleForm}>
